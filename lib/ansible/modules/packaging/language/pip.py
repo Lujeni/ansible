@@ -92,7 +92,7 @@ options:
       - The 'forcereinstall' option is only available in Ansible 2.1 and above.
     required: false
     default: present
-    choices: [ "present", "absent", "latest", "forcereinstall" ]
+    choices: [ "present", "absent", "latest", "forcereinstall", "cached" ]
   extra_args:
     description:
       - Extra arguments passed to pip.
@@ -207,6 +207,11 @@ EXAMPLES = '''
 - pip:
     name: bottle
     state: forcereinstall
+
+# Download (Bottle) without installing it
+- pip:
+    name: bottle
+    state: cached
 
 # Install (Bottle) while ensuring the umask is 0022 (to ensure other users can use it)
 - pip:
@@ -385,6 +390,7 @@ def main():
         absent='uninstall -y',
         latest='install -U',
         forcereinstall='install -U --force-reinstall',
+        cached='download',
     )
 
     module = AnsibleModule(
